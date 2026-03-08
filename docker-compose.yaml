@@ -43,18 +43,14 @@ services:
     networks:
       - mail_network
 
-  roundcube:
-    image: roundcube/roundcubemail:latest-apache
-    container_name: roundcube
+  webmail:
+    image: hardware/rainloop:latest
+    container_name: webmail
     restart: always
     ports:
       - "8081:80"
-    environment:
-      - ROUNDCUBEMAIL_DEFAULT_HOST=mailserver
-      - ROUNDCUBEMAIL_DEFAULT_PORT=143
-      - ROUNDCUBEMAIL_SMTP_SERVER=mailserver
-      - ROUNDCUBEMAIL_SMTP_PORT=587
-      - ROUNDCUBEMAIL_PLUGINS=archive,zipdownload
+    volumes:
+      - ./data/rainloop:/var/www/html/data
     networks:
       - mail_network
     depends_on:
