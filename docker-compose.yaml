@@ -48,7 +48,7 @@ services:
     container_name: roundcube
     restart: always
     ports:
-      - "8080:80"
+      - "8081:80"
     environment:
       - ROUNDCUBEMAIL_DEFAULT_HOST=mailserver
       - ROUNDCUBEMAIL_DEFAULT_PORT=143
