@@ -48,9 +48,9 @@ services:
     container_name: webmail
     restart: always
     ports:
-      - "8081:80"
+      - "8081:8888"
     volumes:
-      - ./data/rainloop:/var/www/html/data
+      - ./data/rainloop:/rainloop/data
     networks:
       - mail_network
     depends_on:
