@@ -55,6 +55,10 @@ services:
       - ROUNDCUBEMAIL_SMTP_SERVER=mailserver
       - ROUNDCUBEMAIL_SMTP_PORT=587
       - ROUNDCUBEMAIL_PLUGINS=archive,zipdownload
+      - ROUNDCUBEMAIL_DB_TYPE=sqlite
+      - ROUNDCUBEMAIL_DB_DIR=/var/www/html/db
+    volumes:
+      - ./data/roundcube:/var/www/html/db
     networks:
       - mail_network
     depends_on:
