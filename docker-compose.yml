@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  mailserver:
+    image: docker.io/mailserver/docker-mailserver:latest
+    container_name: mailserver
+    hostname: mail
+    domainname: ${DOMAINNAME}
+    ports:
+      - "25:25"      # SMTP
+      - "465:465"    # SMTPS
+      - "587:587"    # Submission
+      - "993:993"    # IMAPS
+      - "995:995"    # POP3S
+    volumes:
+      - ./data/mail:/var/mail
+      - ./data/mail-state:/var/mail-state
+      - ./data/ssl:/tmp/ssl:ro
+      - ./config/:/tmp/docker-mailserver/
+    environment:
+      - ENABLE_SPAMASSASSIN=1
+      - SPAMASSASSIN_SPAM_TO_INBOX=1
+      - ENABLE_CLAMAV=1
+      - ENABLE_FAIL2BAN=1
+      - ENABLE_POSTGREY=1
+      - ENABLE_SASLAUTHD=0
+      - ONE_DIR=1
+      - DMS_DEBUG=0
+      - SSL_TYPE=manual
+      - SSL_CERT_PATH=/tmp/ssl/cert.pem
+      - SSL_KEY_PATH=/tmp/ssl/key.pem
+      - POSTMASTER_ADDRESS=${POSTMASTER}
+      - UPDATE_CHECK_INTERVAL=10d
+      - PERMIT_DOCKER=network
+      - SPOOF_PROTECTION=1
+      - ENABLE_OPENDKIM=1
+      - ENABLE_OPENDMARC=1
+      - ENABLE_POLICYD_SPF=1
+    cap_add:
+      - NET_ADMIN
+      - SYS_PTRACE
+    restart: always
+    networks:
+      - mail_network
+
+networks:
+  mail_network:
+    driver: bridge
